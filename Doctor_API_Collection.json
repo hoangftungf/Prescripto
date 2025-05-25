@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "6a0a7c65-d7b7-4e88-b3d9-17bb2f0a4c9e",
+		"name": "Prescripto Doctor APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Doctor Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.json().success) {",
+							"    pm.environment.set(\"doctorToken\", pm.response.json().token);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"<DOCTOR_EMAIL>\",\n  \"password\": \"<DOCTOR_PASSWORD>\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/doctor/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doctor",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Doctor Dashboard",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "dtoken",
+						"value": "{{doctorToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/doctor/dashboard",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doctor",
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Doctor Profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "dtoken",
+						"value": "{{doctorToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/doctor/profile",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doctor",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Doctor Appointments",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "dtoken",
+						"value": "{{doctorToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/doctor/appointments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doctor",
+						"appointments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Doctor Profile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "dtoken",
+						"value": "{{doctorToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fees\": 60,\n  \"address\": {\n    \"street\": \"456 Main Street\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"country\": \"USA\",\n    \"pincode\": \"10001\"\n  },\n  \"available\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/doctor/update-profile",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doctor",
+						"update-profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Doctor Availability",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "dtoken",
+						"value": "{{doctorToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/doctor/change-availability",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doctor",
+						"change-availability"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Appointment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "dtoken",
+						"value": "{{doctorToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"appointmentId\": \"<APPOINTMENT_ID>\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/doctor/cancel-appointment",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doctor",
+						"cancel-appointment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Complete Appointment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "dtoken",
+						"value": "{{doctorToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"appointmentId\": \"<APPOINTMENT_ID>\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/doctor/complete-appointment",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doctor",
+						"complete-appointment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Doctors (Public)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/doctor/list",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doctor",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}

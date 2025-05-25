@@ -1,0 +1,160 @@
+{
+  "info": {
+    "name": "Test Book Appointment API",
+    "description": "A simple collection to test the Book Appointment API in Prescripto application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Login User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.token) {",
+              "    pm.environment.set(\"userToken\", jsonData.token);",
+              "    pm.environment.set(\"userId\", jsonData.userData._id);",
+              "    console.log(\"Token saved: \" + jsonData.token);",
+              "    console.log(\"User ID saved: \" + jsonData.userData._id);",
+              "} else {",
+              "    console.log(\"Failed to get token or user data\");",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"user@test.com\",\n    \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/user/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "user",
+            "login"
+          ]
+        },
+        "description": "Login to get user token for authentication"
+      }
+    },
+    {
+      "name": "2. Get Doctor List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.doctors && jsonData.doctors.length > 0) {",
+              "    pm.environment.set(\"docId\", jsonData.doctors[0]._id);",
+              "    console.log(\"Doctor ID saved: \" + jsonData.doctors[0]._id);",
+              "} else {",
+              "    console.log(\"Failed to get doctor data\");",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/doctor/list",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "doctor",
+            "list"
+          ]
+        },
+        "description": "Get list of doctors to find a doctor ID for booking"
+      }
+    },
+    {
+      "name": "3. Book Appointment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{userToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userId\": \"{{userId}}\",\n    \"docId\": \"{{docId}}\",\n    \"slotDate\": \"{{slotDate}}\",\n    \"slotTime\": \"{{slotTime}}\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/user/book-appointment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "user",
+            "book-appointment"
+          ]
+        },
+        "description": "Book an appointment with a doctor"
+      }
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Get current date for slotDate in format day_month_year",
+          "var today = new Date();",
+          "var tomorrow = new Date(today);",
+          "tomorrow.setDate(today.getDate() + 1);",
+          "",
+          "var day = tomorrow.getDate();",
+          "var month = tomorrow.getMonth() + 1;",
+          "var year = tomorrow.getFullYear();",
+          "",
+          "var slotDate = day + \"_\" + month + \"_\" + year;",
+          "pm.environment.set(\"slotDate\", slotDate);",
+          "",
+          "// Set a sample time slot (10:00 AM)",
+          "pm.environment.set(\"slotTime\", \"10:00 AM\");"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000/api"
+    }
+  ]
+}
